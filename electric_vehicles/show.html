@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+
+<head>
+  <link type="text/css" rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+  <script src="/bootstrap/js/fontawesome.js" data-auto-replace-svg="nest"></script>
+
+</head>
+
+<body>
+  {% block content %}
+  {% include '_navbar.html' %}
+  {% endblock %}
+
+  <div class="container">
+    <h2> Electric Vehicle Details</h1>
+      </br>
+      {% if user %}
+      <a class="btn btn-info" href="/electric_vehicles/{{electric_vehicle.key.id()}}">Edit</a>
+      <a class="btn btn-danger" href="/electric_vehicles/delete/{{electric_vehicle.key.id()}}"> Delete</a>
+      <hr>
+      {% endif %}
+
+      <div class="row">
+        <div class="col-3 font-weight-bold">Name</div>
+        <div class="col-6">{{ electric_vehicle.name }}</div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-3 font-weight-bold">Manufacturer</div>
+        <div class="col-6">{{ electric_vehicle.manufacturer }}</div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-3 font-weight-bold">Year</div>
+        <div class="col-6">{{ electric_vehicle.year }}</div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-3 font-weight-bold">Battery Size</div>
+        <div class="col-6">{{ electric_vehicle.batterySize | int }}</div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-3 font-weight-bold">WLTP Range</div>
+        <div class="col-6">{{ electric_vehicle.rangeWltp | int }}</div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-3 font-weight-bold">Cost</div>
+        <div class="col-6">{{ electric_vehicle.cost | int }}</div>
+      </div>
+      </br>
+
+      <div class="row">
+        <div class="col-3 font-weight-bold">Power</div>
+        <div class="col-6">{{ electric_vehicle.power | int }}</div>
+      </div>
+      </br>
+
+      <hr>
+      <h2>Reviews (Average Review: {{ avg_review }}) </h2>
+      <ul class="list-group">
+        {% for review in reviews %}
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-2">
+                <img src="/bootstrap/images/def_face.jpg" class="img img-rounded img-fluid" />
+                <p class="text-secondary text-center">{{ review.date.strftime("%Y-%m-%d %H:%M:%S") }}</p>
+              </div>
+              <div class="col-md-10">
+                <p>
+                  <strong>Anonymous</strong>
+                  {% for counter in range(review.score)%}
+                  <span class="float-right"><i class="text-warning fas fa-star"></i></span>
+                  {% endfor %}
+                </p>
+                <div class="clearfix"></div>
+                <p>{{ review.content }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </ul>
+      <hr>
+      {% if user %}
+      {% include 'electric_vehicles/_review_form.html' %}
+      {% else %}
+      <a class="btn btn-danger" href="/electric_vehicles/">Cancel</a>
+      {% endif %}
+
+
+      <a href="{{  url|safe  }}">{{ url_linktext }}</a>
+  </div>
+</body>
+
+</html>
+{% endautoescape %}

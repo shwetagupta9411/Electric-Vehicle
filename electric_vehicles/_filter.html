@@ -1,0 +1,156 @@
+<html>
+<head>
+  <script src="/bootstrap/js/jquery.min.js"></script>
+  <link type="text/css" rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+  </link>
+</head>
+
+<body>
+  <h4>Filters</h4>
+  <span class="error-val" style="color:red"></span>
+  <hr></hr>
+  <form class="form-inline" action="/electric_vehicles/" method="get">
+    <div class="form-group">
+      <label class="px-2">Name : </label>
+      {% if filters.name %}
+      <input type="text" class="form-control" value="{{filters.name}}" name="name" placeholder="Name">
+      {% else %}
+      <input type="text" class="form-control" name="name" placeholder="Name">
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label class="px-2">Manufacturer : </label>
+      {% if filters.manufacturer %}
+      <input type="text" class="form-control" value="{{filters.manufacturer}}" name="manufacturer" placeholder="Manufacturer">
+      {% else %}
+      <input type="text" class="form-control" name="manufacturer" placeholder="Manufacturer">
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label class="px-2">Year From: </label>
+      {% if filters.from_year %}
+      <input type="number" class="form-control minYear" value="{{filters.from_year}}" name="from_year" placeholder="From Year">
+      {% else %}
+      <input type="number" class="form-control minYear" name="from_year" placeholder="From Year">
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label class="px-2"> To: </label>
+      {% if filters.to_year %}
+      <input type="number" class="form-control maxYear" value="{{filters.to_year}}" name="to_year" placeholder="To Year">
+      {% else %}
+      <input type="number" class="form-control maxYear" name="to_year" placeholder="To Year">
+      {% endif %}
+    </div>
+
+    <div class="form-group pt-2">
+      <label class="px-2"> Cost From: </label>
+      {% if filters.cost_from %}
+      <input type="number" class="form-control minCost" value="{{filters.cost_from}}" name="cost_from" placeholder="Cost From">
+      {% else %}
+      <input type="number" class="form-control minCost" name="cost_from" placeholder="Cost From">
+      {% endif %}
+    </div>
+    <div class="form-group pt-2">
+      <label class="px-2"> To: </label>
+      {% if filters.cost_to %}
+      <input type="number" class="form-control maxCost" value="{{filters.cost_to}}" name="cost_to" placeholder="Cost To">
+      {% else %}
+      <input type="number" class="form-control maxCost" name="cost_to" placeholder="Cost To">
+      {% endif %}
+    </div>
+    <div class="form-group pt-2">
+      <label class="px-2"> Battery Size From : </label>
+      {% if filters.battery_size_from %}
+      <input type="number" class="form-control minBattery" value="{{filters.battery_size_from}}" name="battery_size_from" placeholder="Battery Size From">
+      {% else %}
+      <input type="number" class="form-control minBattery" name="battery_size_from" placeholder="Battery Size From">
+      {% endif %}
+    </div>
+    <div class="form-group pt-2">
+      <label class="px-2"> To : </label>
+      {% if filters.battery_size_to %}
+      <input type="number" class="form-control maxBattery" value="{{filters.battery_size_to}}" name="battery_size_to" placeholder="Battery Size To">
+      {% else %}
+      <input type="number" class="form-control maxBattery" name="battery_size_to" placeholder="Battery Size To">
+      {% endif %}
+    </div>
+    <div class="form-group pt-2">
+      <label class="px-2"> WLTP From : </label>
+      {% if filters.wltp_from %}
+      <input type="number" class="form-control minWLTP" value="{{filters.wltp_from}}" name="wltp_from" placeholder="WLTP From">
+      {% else %}
+      <input type="number" class="form-control minWLTP" name="wltp_from" placeholder="WLTP From">
+      {% endif %}
+    </div>
+    <div class="form-group pt-2">
+      <label class="px-2"> To : </label>
+      {% if filters.wltp_to %}
+      <input type="number" class="form-control maxWLTP" value="{{filters.wltp_to}}" name="wltp_to" placeholder="WLTP To">
+      {% else %}
+      <input type="number" class="form-control maxWLTP" name="wltp_to" placeholder="WLTP To">
+      {% endif %}
+    </div>
+    <div class="form-group pt-2">
+      <label class="px-2"> Power From : </label>
+      {% if filters.power_from %}
+      <input type="number" class="form-control minPower" value="{{filters.power_from}}" name="power_from" placeholder="Power From">
+      {% else %}
+      <input type="number" class="form-control minPower" name="power_from" placeholder="Power From">
+      {% endif %}
+    </div>
+    <div class="form-group pt-2">
+      <label class="px-2"> To : </label>
+      {% if filters.power_to %}
+      <input type="number" class="form-control maxPower" value="{{filters.power_to}}" name="power_to" placeholder="Power To">
+      {% else %}
+      <input type="number" class="form-control maxPower" name="power_to" placeholder="Power To">
+      {% endif %}
+    </div>
+    <div class="form-group pt-2">
+      <input type="submit" class="search btn btn-sm btn-primary" value="Search" id="seaerch"/>
+      <a class="btn btn-sm btn-danger ml-1" href="/electric_vehicles/">Clear Filters </a>
+    </div>
+  </form>
+  <hr></hr>
+</body>
+<script>
+  $(document).ready(function() {
+    $( "form" ).submit(function( event ) {
+      if(($( ".minYear" ).val().length>0) && ($( ".maxYear" ).val().length>0)) {
+        if( parseInt($( ".minYear" ).val()) > parseInt($( ".maxYear" ).val()) ) {
+          $( "span" ).text( "'To' value of the 'Year' should be greater than the 'From' value" ).show().fadeOut(10000);
+          event.preventDefault();
+        }
+      }
+      if(($( ".minCost" ).val().length>0) && ($( ".maxCost" ).val().length>0)) {
+        if( parseInt($( ".minCost" ).val()) > parseInt($( ".maxCost" ).val()) ) {
+          $( "span" ).text( "'To' value of the 'Cost' should be greater than the 'From' value" ).show().fadeOut(10000);
+          event.preventDefault();
+        }
+      }
+      if(($( ".minBattery" ).val().length>0) && ($( ".maxBattery" ).val().length>0)) {
+        if( parseInt($( ".minBattery" ).val()) > parseInt($( ".maxBattery" ).val()) ) {
+          $( "span" ).text( "'To' value of the 'Battery' should be greater than the 'From' value" ).show().fadeOut(10000);
+          event.preventDefault();
+        }
+      }
+      if(($( ".minWLTP" ).val().length>0) && ($( ".maxWLTP" ).val().length>0)) {
+        if( parseInt($( ".minWLTP" ).val()) > parseInt($( ".maxWLTP" ).val()) ) {
+          $( "span" ).text( "'To' value of the 'WLTP' should be greater than the 'From' value" ).show().fadeOut(10000);
+          event.preventDefault();
+        }
+      }
+      if(($( ".minPower" ).val().length>0) && ($( ".maxPower" ).val().length>0)) {
+        if( parseInt($( ".minPower" ).val()) > parseInt($( ".maxPower" ).val()) ) {
+          $( "span" ).text( "'To' value of the 'Power' should be greater than the 'From' value" ).show().fadeOut(10000);
+          event.preventDefault();
+        }
+      }
+    });
+  });
+</script>
+</html>

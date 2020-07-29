@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+
+<head>
+  <link type="text/css" rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+</head>
+
+<body>
+  {% block content %}
+  {% include '_navbar.html' %}
+  {% endblock %}
+  <div class="container">
+    <br />
+    {% include '_messages.html' %}
+
+    {% if user %}
+    </br>
+    <div class="alert alert-success" role="alert">
+      Hello {{ user.email() }} welcome to the application!
+    </div>
+    <hr>
+    {% else %}
+    <br>
+    <div class="alert alert-success" role="alert">
+      Hello Guest! Welcome to the application!
+    </div>
+    {% endif %}
+  </div>
+</body>
+
+</html>
+{% endautoescape %}

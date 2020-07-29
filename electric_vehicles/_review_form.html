@@ -1,0 +1,45 @@
+<html>
+<head>
+  <script src="/bootstrap/js/jquery.min.js"></script>
+  <link type="text/css" rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+  </link>
+  <script>
+    $(document).ready(function() {
+      const $valueSpan = $('.valueSpan2');
+      const $value = $('#customRange11');
+      $valueSpan.html($value.val());
+      $value.on('input change', () => {
+        $valueSpan.html($value.val());
+      });
+    });
+  </script>
+</head>
+<body>
+  <hr>
+  <form action="{{ review_form_url }}" method="POST">
+    <div class="form-group">
+      <h2>Please submit your review.</h2>
+      <textarea maxlength="1000" required class="form-control" rows="5" placeholder="Review limited to 1000 characters." name="content"></textarea>
+      <input type="hidden" class="form-control" name="electric_vehicle_id" value="{{ electric_vehicle.key.id() }}">
+    </div>
+    <div class="form-group row">
+      <div class="col-sm-3">
+      <h5>Please rate out of 10:</h5></div>
+      <div class="col-sm-9" style = "margin-top: -2.35%;">
+        <div class="d-flex my-4">
+          <span class="font-weight-bold text-primary mr-2 mt-1">0</span>
+          <div class="w-100">
+            <input type="range" class="form-control custom-range" id="customRange11" min="0" max="10" name="score" value=0>
+          </div>
+          <span class="font-weight-bold text-primary ml-2 valueSpan2"></span>
+        </div>
+      </div>
+    </div>
+
+    <input type="submit" class="btn btn-success" value="Submit Review">
+    <a class="btn btn-danger" href="/electric_vehicles/">Cancel</a>
+    <hr>
+  </form>
+
+</<body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+
+<head>
+  <script src="/bootstrap/js/jquery.min.js"></script>
+  <link type="text/css" rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+  </link>
+  <script>
+    $(document).ready(function() {
+      $("input").click(function() {
+        var favorite = [];
+        if ($("input[name='ElectricVehicle[]']:checked").length >= 2) {
+          $("input[name='ElectricVehicle[]']:checked").each(function(key, value) {
+            favorite.push(value.value)
+          });
+          $('a.compare-button').removeClass('disabled')
+          $('a.compare-button').prop('href', '/electric_vehicles/compare?ids=' + favorite.join(","))
+        } else {
+          $('a.compare-button').addClass('disabled')
+        }
+      });
+    });
+  </script>
+
+</head>
+
+<body>
+  {% include '_navbar.html' %}
+  <div class="container">
+    <br />
+    {% include '_messages.html' %}
+    {% include 'electric_vehicles/_filter.html' %}
+    <br />
+    <h4>
+      Electric Vehicles List
+    </h4>
+    <a class="btn btn-info disabled compare-button" style="margin-left: 79%; margin-bottom: 3%; margin-top: -4%;"> Compare Electric Vehicles</a>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Add to Compare</th>
+          <th>Name</th>
+          <th>Manufacturer</th>
+          <th>Year</th>
+          <th>Cost</th>
+          <th>Battery Size</th>
+          <th>WLTP Range</th>
+          <th>Power</th>
+        <tr>
+      </thead>
+      <tbody>
+        {% if electric_vehicles | length > 0 %}
+        {% for ev in electric_vehicles %}
+        <tr>
+          <td style="width: 9rem"> <input class="form-check-input" value="{{ev.key.id()}}" type="checkbox" name="ElectricVehicle[]" style="margin-left: 3rem"> </td>
+          <td> <a href="/electric_vehicles/show/{{ev.key.id()}}"> {{ ev.name }}</a> </td>
+          <td>{{ ev.manufacturer }}</td>
+          <td>{{ ev.year }}</td>
+          <td>{{ ev.cost }}</td>
+          <td>{{ ev.batterySize }}</td>
+          <td>{{ ev.rangeWltp }}</td>
+          <td>{{ ev.power }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td>No records found</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+    <hr>
+    <hr>
+    <a href="{{ url|safe }}">{{ url_linktext }}</a>
+  </div>
+</body>
+
+</html>
+{% endautoescape %}
